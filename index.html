@@ -1,0 +1,3546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D-FORCE | Digital Forensics</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+:root{
+    --bg:#07111f;
+    --panel:#0d1b2a;
+    --border:#203247;
+    --text:#edf5ff;
+    --muted:#8ea4ba;
+    --accent:#4da3ff;
+    --green:#35d07f;
+    --yellow:#ffc857;
+    --red:#ff5d6c;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+}
+
+button,input,textarea,select{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+/* LOGIN */
+
+#loginScreen{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--bg);
+}
+
+.login-box{
+    width:420px;
+    padding:40px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:18px;
+}
+
+.logo{
+    font-size:30px;
+    font-weight:800;
+    letter-spacing:2px;
+}
+
+.logo span{
+    color:var(--accent);
+}
+
+.login-sub{
+    color:var(--muted);
+    margin:8px 0 30px;
+}
+
+.field{
+    margin-bottom:18px;
+}
+
+.field label{
+    display:block;
+    font-size:13px;
+    color:var(--muted);
+    margin-bottom:7px;
+}
+
+.field input,
+.field textarea,
+.field select{
+    width:100%;
+    padding:12px 14px;
+    background:#081522;
+    border:1px solid var(--border);
+    border-radius:9px;
+    color:var(--text);
+    outline:none;
+}
+
+.field textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+.primary{
+    width:100%;
+    padding:13px;
+    background:var(--accent);
+    border:0;
+    border-radius:9px;
+    color:white;
+    font-weight:700;
+}
+
+/* APP */
+
+#app{
+    display:none;
+    min-height:100vh;
+}
+
+.sidebar{
+    position:fixed;
+    width:245px;
+    top:0;
+    bottom:0;
+    left:0;
+    background:#081522;
+    border-right:1px solid var(--border);
+    padding:25px 15px;
+}
+
+.side-logo{
+    padding:0 12px 28px;
+}
+
+.nav-title{
+    color:#60778d;
+    font-size:11px;
+    margin:20px 12px 8px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.nav-btn{
+    width:100%;
+    background:transparent;
+    border:0;
+    color:var(--muted);
+    text-align:left;
+    padding:12px;
+    border-radius:8px;
+    margin-bottom:4px;
+}
+
+.nav-btn:hover,
+.nav-btn.active{
+    background:#10263c;
+    color:white;
+}
+
+.main{
+    margin-left:245px;
+    min-height:100vh;
+}
+
+.topbar{
+    height:70px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 30px;
+    background:#07111f;
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+.page-title{
+    font-size:19px;
+    font-weight:700;
+}
+
+.user-area{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.user-name{
+    color:var(--muted);
+    font-size:13px;
+}
+
+/* THEME */
+
+.theme-wrap{
+    position:relative;
+}
+
+.theme-btn{
+    background:#102236;
+    color:white;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:8px 11px;
+}
+
+.theme-menu{
+    display:none;
+    position:absolute;
+    right:0;
+    top:43px;
+    width:170px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.theme-menu button{
+    width:100%;
+    padding:11px 13px;
+    background:transparent;
+    color:var(--text);
+    border:0;
+    text-align:left;
+}
+
+.theme-menu button:hover{
+    background:#15304b;
+}
+
+/* CONTENT */
+
+.content{
+    padding:30px;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+/* DASHBOARD */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin:25px 0;
+}
+
+.card{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:20px;
+}
+
+.card-label{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.card-number{
+    font-size:30px;
+    font-weight:800;
+    margin-top:8px;
+}
+
+.grid2{
+    display:grid;
+    grid-template-columns:1.5fr 1fr;
+    gap:20px;
+}
+
+.panel{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:22px;
+    margin-bottom:20px;
+}
+
+.panel h3{
+    margin-bottom:18px;
+}
+
+.welcome{
+    padding:25px;
+    border:1px solid var(--border);
+    border-radius:14px;
+    background:#102942;
+}
+
+.muted{
+    color:var(--muted);
+}
+
+/* BUTTONS */
+
+.btn{
+    padding:10px 15px;
+    border-radius:8px;
+    border:1px solid var(--border);
+    background:#12263a;
+    color:white;
+}
+
+.btn-primary{
+    background:var(--accent);
+    border-color:var(--accent);
+}
+
+.btn-danger{
+    background:#451b24;
+}
+
+.btn-green{
+    background:#123a2b;
+}
+
+/* CASES */
+
+.section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.full{
+    grid-column:1/-1;
+}
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    text-align:left;
+    padding:14px 10px;
+    border-bottom:1px solid var(--border);
+    font-size:13px;
+}
+
+th{
+    color:var(--muted);
+}
+
+.badge{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:700;
+}
+
+.high{
+    background:#4b2028;
+    color:#ff7c88;
+}
+
+.medium{
+    background:#493b1b;
+    color:#ffd76c;
+}
+
+.low{
+    background:#173b2c;
+    color:#69e69f;
+}
+
+/* EVIDENCE */
+
+.upload-box{
+    border:1px dashed #31506d;
+    border-radius:13px;
+    padding:35px;
+    text-align:center;
+    background:#091827;
+}
+
+.upload-box input{
+    margin:20px 0;
+}
+
+/* TRACE */
+
+.trace{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    overflow-x:auto;
+    padding:20px 5px;
+}
+
+.trace-item{
+    min-width:145px;
+    padding:17px;
+    border:1px solid var(--border);
+    background:#0c1d2d;
+    border-radius:10px;
+    text-align:center;
+}
+
+.trace-arrow{
+    color:var(--accent);
+    font-size:22px;
+}
+
+/* TIMELINE */
+
+.timeline{
+    border-left:2px solid #29445e;
+    margin-left:12px;
+    padding-left:25px;
+}
+
+.event{
+    position:relative;
+    margin-bottom:25px;
+}
+
+.event::before{
+    content:"";
+    position:absolute;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:var(--accent);
+    left:-31px;
+    top:4px;
+}
+
+.event-time{
+    color:var(--muted);
+    font-size:12px;
+}
+
+.event-title{
+    font-weight:700;
+    margin:5px 0;
+}
+
+/* REVIEW */
+
+.radio-group{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.radio-card{
+    border:1px solid var(--border);
+    padding:13px 18px;
+    border-radius:9px;
+}
+
+.radio-card input{
+    margin-right:7px;
+}
+
+/* LIGHT THEME */
+
+body.light{
+    --bg:#f2f6fa;
+    --panel:#ffffff;
+    --border:#d8e1ea;
+    --text:#172536;
+    --muted:#617386;
+    --accent:#2379d7;
+}
+
+body.light .sidebar{
+    background:#ffffff;
+}
+
+body.light .topbar{
+    background:#ffffff;
+}
+
+body.light .field input,
+body.light .field textarea,
+body.light .field select{
+    background:#f8fafc;
+    color:#172536;
+}
+
+body.light .upload-box{
+    background:#f8fafc;
+}
+
+body.light .trace-item{
+    background:#f7fafd;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px){
+
+    .sidebar{
+        width:190px;
+    }
+
+    .main{
+        margin-left:190px;
+    }
+
+    .cards{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .grid2{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:650px){
+
+    .sidebar{
+        display:none;
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .cards{
+        grid-template-columns:1fr;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .content{
+        padding:18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+
+<!-- ================= LOGIN ================= -->
+
+<div id="loginScreen">
+
+    <div class="login-box">
+
+        <div class="logo">
+            D-<span>FORCE</span>
+        </div>
+
+        <div class="login-sub">
+            Digital Forensics & Investigation Platform
+        </div>
+
+        <form onsubmit="login(event)">
+
+            <div class="field">
+                <label>INVESTIGATOR NAME</label>
+                <input
+                    id="loginUsername"
+                    required
+                    placeholder="Enter investigator name">
+            </div>
+
+            <div class="field">
+                <label>EMAIL</label>
+                <input
+                    id="loginEmail"
+                    type="email"
+                    required
+                    placeholder="Enter email">
+            </div>
+
+            <div class="field">
+                <label>PASSWORD</label>
+                <input
+                    id="loginPassword"
+                    type="password"
+                    required
+                    placeholder="Enter password">
+            </div>
+
+            <div class="field">
+                <label>ROLE</label>
+
+                <select id="loginRole">
+                    <option>Investigator</option>
+                    <option>Supervisor</option>
+                    <option>Admin</option>
+                </select>
+
+            </div>
+
+            <button class="primary">
+                AUTHENTICATE
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ================= APP ================= -->
+
+<div id="app">
+
+    <aside class="sidebar">
+
+        <div class="side-logo">
+
+            <div class="logo">
+                D-<span>FORCE</span>
+            </div>
+
+        </div>
+
+        <div class="nav-title">Main</div>
+
+        <button
+            class="nav-btn active"
+            onclick="showPage('dashboard',this)">
+            ◈ Dashboard
+        </button>
+
+        <button
+            class="nav-btn"
+            onclick="showPage('cases',this)">
+            ▣ Cases
+        </button>
+
+        <button
+            class="nav-btn"
+            onclick="showPage('evidence',this)">
+            ◇ Evidence
+        </button>
+
+        <button
+            class="nav-btn"
+            onclick="showPage('analysis',this)">
+            ◉ Analysis
+        </button>
+
+        <button
+            class="nav-btn"
+            onclick="showPage('findings',this)">
+            ⚠ Findings
+        </button>
+
+        <div class="nav-title">
+            Investigation
+        </div>
+
+        <button
+            class="nav-btn"
+            onclick="showPage('timeline',this)">
+            ◷ Timeline
+        </button>
+
+        <button
+            class="nav-btn"
+            onclick="showPage('trace',this)">
+            ⛓ Evidence Trace
+        </button>
+
+        <button
+            class="nav-btn"
+            onclick="showPage('review',this)">
+            ✓ Investigator Review
+        </button>
+
+        <div class="nav-title">
+            Output
+        </div>
+
+        <button
+            class="nav-btn"
+            onclick="showPage('reports',this)">
+            ▤ Reports
+        </button>
+
+        <button
+            class="nav-btn"
+            onclick="logout()">
+            ⇥ Logout
+        </button>
+
+    </aside>
+
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div
+                class="page-title"
+                id="pageTitle">
+                Dashboard
+            </div>
+
+            <div class="user-area">
+
+                <div
+                    class="user-name"
+                    id="currentUser">
+                    Investigator
+                </div>
+
+                <!-- THEME IS SEPARATE FROM SAVE -->
+                <div class="theme-wrap">
+
+                    <button
+                        class="theme-btn"
+                        onclick="toggleThemeMenu()">
+                        🖥 Theme
+                    </button>
+
+                    <div
+                        class="theme-menu"
+                        id="themeMenu">
+
+                        <button onclick="setTheme('system')">
+                            💻 System Default
+                        </button>
+
+                        <button onclick="setTheme('dark')">
+                            🌙 Dark
+                        </button>
+
+                        <button onclick="setTheme('light')">
+                            ☀️ Light
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <div class="content">
+
+
+<!-- ================= DASHBOARD ================= -->
+
+<section
+    class="page active"
+    id="dashboard">
+
+    <div class="welcome">
+
+        <h2>
+            Welcome to D-FORCE
+        </h2>
+
+        <p
+            class="muted"
+            style="margin-top:8px">
+            Evidence-to-investigation traceability platform.
+        </p>
+
+    </div>
+
+
+    <div class="cards">
+
+        <div class="card">
+
+            <div class="card-label">
+                TOTAL CASES
+            </div>
+
+            <div
+                class="card-number"
+                id="totalCases">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-label">
+                ACTIVE CASES
+            </div>
+
+            <div
+                class="card-number"
+                id="activeCases">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-label">
+                EVIDENCE ITEMS
+            </div>
+
+            <div
+                class="card-number"
+                id="totalEvidence">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-label">
+                PENDING REVIEWS
+            </div>
+
+            <div
+                class="card-number"
+                id="pendingReviews">
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="grid2">
+
+        <div class="panel">
+
+            <h3>
+                Recent Cases
+            </h3>
+
+            <div id="recentCases">
+                No cases yet.
+            </div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <h3>
+                Investigation Flow
+            </h3>
+
+            <p class="muted">
+                Evidence →
+                Integrity →
+                Analysis →
+                Finding →
+                Review →
+                Report
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CASES ================= -->
+
+<section
+    class="page"
+    id="cases">
+
+    <div class="section-head">
+
+        <div>
+
+            <h2>
+                Cases
+            </h2>
+
+            <p class="muted">
+                Create and manage forensic investigations.
+            </p>
+
+        </div>
+
+
+        <button
+            class="btn btn-primary"
+            onclick="openCaseForm()">
+            + CREATE INVESTIGATION
+        </button>
+
+    </div>
+
+
+    <!-- CREATE FORM -->
+
+    <div
+        class="panel"
+        id="caseFormPanel"
+        style="display:none">
+
+        <h3>
+            Create New Investigation
+        </h3>
+
+        <form onsubmit="saveCase(event)">
+
+            <div class="form-grid">
+
+                <div class="field">
+
+                    <label>
+                        INCIDENT NAME
+                    </label>
+
+                    <input
+                        id="caseName"
+                        required
+                        placeholder="Enter incident name">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        PRIORITY
+                    </label>
+
+                    <select id="casePriority">
+
+                        <option>
+                            HIGH
+                        </option>
+
+                        <option>
+                            MEDIUM
+                        </option>
+
+                        <option>
+                            LOW
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field full">
+
+                    <label>
+                        DESCRIPTION
+                    </label>
+
+                    <textarea
+                        id="caseDescription"
+                        placeholder="Describe the incident...">
+                    </textarea>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="btn btn-primary">
+                SAVE INVESTIGATION
+            </button>
+
+
+            <button
+                type="button"
+                class="btn"
+                onclick="closeCaseForm()">
+                CANCEL
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- CASE TABLE -->
+
+    <div class="panel">
+
+        <h3>
+            All Investigations
+        </h3>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            CASE ID
+                        </th>
+
+                        <th>
+                            INCIDENT
+                        </th>
+
+                        <th>
+                            PRIORITY
+                        </th>
+
+                        <th>
+                            INVESTIGATOR
+                        </th>
+
+                        <th>
+                            EMAIL
+                        </th>
+
+                        <th>
+                            STATUS
+                        </th>
+
+                        <th>
+                            ACTION
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody
+                    id="caseTable">
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= EVIDENCE ================= -->
+
+<section
+    class="page"
+    id="evidence">
+
+    <div class="section-head">
+
+        <div>
+
+            <h2>
+                Digital Evidence
+            </h2>
+
+            <p class="muted">
+                Upload and preserve evidence information.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <h3>
+            Current Case
+        </h3>
+
+        <div
+            id="evidenceCaseInfo"
+            class="muted">
+            Select a case from Cases.
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="upload-box">
+
+            <h3>
+                Upload Evidence
+            </h3>
+
+            <p
+                class="muted"
+                style="margin-top:8px">
+                Evidence will be associated with the selected case.
+            </p>
+
+            <input
+                type="file"
+                id="evidenceFile"
+                onchange="processEvidence(this)">
+
+            <div id="evidenceResult">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <h3>
+            Saved Evidence
+        </h3>
+
+        <div id="evidenceList">
+            No evidence added.
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ANALYSIS ================= -->
+
+<section
+    class="page"
+    id="analysis">
+
+    <div class="section-head">
+
+        <div>
+
+            <h2>
+                Analysis
+            </h2>
+
+            <p class="muted">
+                Analyze evidence and detect suspicious activity.
+            </p>
+
+        </div>
+
+
+        <button
+            class="btn btn-primary"
+            onclick="runAnalysis()">
+            RUN ANALYSIS
+        </button>
+
+    </div>
+
+
+    <div class="cards">
+
+        <div class="card">
+
+            <div class="card-label">
+                PARSED EVENTS
+            </div>
+
+            <div
+                class="card-number"
+                id="parsedEvents">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-label">
+                ANOMALIES
+            </div>
+
+            <div
+                class="card-number"
+                id="anomalies">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-label">
+                IOCs DETECTED
+            </div>
+
+            <div
+                class="card-number"
+                id="iocs">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-label">
+                RISK SCORE
+            </div>
+
+            <div
+                class="card-number"
+                id="riskScore">
+                --
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <h3>
+            Analysis Output
+        </h3>
+
+        <div
+            id="analysisOutput"
+            class="muted">
+            No analysis performed yet.
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FINDINGS ================= -->
+
+<section
+    class="page"
+    id="findings">
+
+    <h2>
+        Findings
+    </h2>
+
+    <p
+        class="muted"
+        style="margin:8px 0 25px">
+        Evidence-backed investigation findings.
+    </p>
+
+
+    <div class="panel">
+
+        <div id="findingContent">
+            No findings generated yet.
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= TIMELINE ================= -->
+
+<section
+    class="page"
+    id="timeline">
+
+    <h2>
+        Investigation Timeline
+    </h2>
+
+    <p
+        class="muted"
+        style="margin:8px 0 25px">
+        Chronological record of investigation activity.
+    </p>
+
+
+    <div class="panel">
+
+        <div
+            class="timeline"
+            id="timelineContent">
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= TRACE ================= -->
+
+<section
+    class="page"
+    id="trace">
+
+    <h2>
+        Evidence Trace
+    </h2>
+
+    <p
+        class="muted"
+        style="margin:8px 0 25px">
+        Trace findings back to supporting evidence.
+    </p>
+
+
+    <div class="panel">
+
+        <div class="trace">
+
+            <div class="trace-item">
+                <b>Evidence</b>
+                <br>
+                <small class="muted">
+                    E-001
+                </small>
+            </div>
+
+            <div class="trace-arrow">
+                →
+            </div>
+
+            <div class="trace-item">
+                <b>Integrity</b>
+                <br>
+                <small class="muted">
+                    SHA-256
+                </small>
+            </div>
+
+            <div class="trace-arrow">
+                →
+            </div>
+
+            <div class="trace-item">
+                <b>Event</b>
+                <br>
+                <small class="muted">
+                    Login Event
+                </small>
+            </div>
+
+            <div class="trace-arrow">
+                →
+            </div>
+
+            <div class="trace-item">
+                <b>Analysis</b>
+                <br>
+                <small class="muted">
+                    Anomaly
+                </small>
+            </div>
+
+            <div class="trace-arrow">
+                →
+            </div>
+
+            <div class="trace-item">
+                <b>Finding</b>
+                <br>
+                <small class="muted">
+                    F-001
+                </small>
+            </div>
+
+            <div class="trace-arrow">
+                →
+            </div>
+
+            <div class="trace-item">
+                <b>Decision</b>
+                <br>
+                <small class="muted">
+                    Review
+                </small>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= REVIEW ================= -->
+
+<section
+    class="page"
+    id="review">
+
+    <h2>
+        Investigator Review
+    </h2>
+
+    <p
+        class="muted"
+        style="margin:8px 0 25px">
+        Investigator decision and justification.
+    </p>
+
+
+    <div class="panel">
+
+        <h3>
+            Current Finding
+        </h3>
+
+        <p
+            class="muted"
+            style="margin:8px 0 20px">
+            Review the generated finding and record your decision.
+        </p>
+
+
+        <div class="field">
+
+            <label>
+                DECISION
+            </label>
+
+            <div class="radio-group">
+
+                <label class="radio-card">
+
+                    <input
+                        type="radio"
+                        name="decision"
+                        value="CONFIRMED"
+                        checked>
+
+                    Confirm Finding
+
+                </label>
+
+
+                <label class="radio-card">
+
+                    <input
+                        type="radio"
+                        name="decision"
+                        value="REJECTED">
+
+                    Reject Finding
+
+                </label>
+
+
+                <label class="radio-card">
+
+                    <input
+                        type="radio"
+                        name="decision"
+                        value="FURTHER REVIEW">
+
+                    Further Review
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                INVESTIGATOR NOTES
+            </label>
+
+            <textarea
+                id="reviewNotes"
+                placeholder="Enter investigation notes...">
+            </textarea>
+
+        </div>
+
+
+        <button
+            class="btn btn-primary"
+            onclick="recordDecision()">
+            RECORD DECISION
+        </button>
+
+
+        <div
+            id="decisionResult"
+            style="margin-top:15px">
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= REPORTS ================= -->
+
+<section
+    class="page"
+    id="reports">
+
+    <h2>
+        Reports
+    </h2>
+
+    <p
+        class="muted"
+        style="margin:8px 0 25px">
+        Generate an evidence-backed investigation report.
+    </p>
+
+
+    <div class="panel">
+
+        <h3>
+            D-FORCE Investigation Report
+        </h3>
+
+
+        <div
+            id="reportPreview"
+            style="margin-top:20px">
+        </div>
+
+
+        <br>
+
+
+        <button
+            class="btn btn-primary"
+            onclick="generateReport()">
+            GENERATE REPORT
+        </button>
+
+
+        <button
+            class="btn"
+            onclick="window.print()">
+            PRINT / SAVE PDF
+        </button>
+
+    </div>
+
+</section>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+/* =========================================
+   STORAGE
+========================================= */
+
+const CASE_KEY = "dforce-cases";
+const SESSION_KEY = "dforce-session";
+const THEME_KEY = "dforce-theme";
+const CURRENT_CASE_KEY = "dforce-current-case";
+
+
+/* =========================================
+   SAMPLE CASE
+========================================= */
+
+function createSampleCase(){
+
+    if(localStorage.getItem(CASE_KEY)){
+        return;
+    }
+
+    const sample = {
+
+        id:"CASE-101",
+
+        incident:"Suspicious Employee Login",
+
+        priority:"HIGH",
+
+        description:
+        "Example forensic investigation showing suspicious authentication activity.",
+
+        investigator:"demo",
+
+        email:"demo@dforce.local",
+
+        role:"Investigator",
+
+        status:"ACTIVE",
+
+        createdAt:new Date().toISOString(),
+
+        evidence:[
+
+            {
+                id:"E-001",
+
+                name:"auth-log-example.txt",
+
+                type:"LOG FILE",
+
+                size:"2 KB",
+
+                hash:"example-sha256-hash",
+
+                uploadedAt:new Date().toISOString()
+
+            }
+
+        ],
+
+        analysis:{
+
+            parsedEvents:124,
+
+            anomalies:7,
+
+            iocs:3,
+
+            riskScore:87,
+
+            output:
+            "Multiple failed authentication attempts followed by a successful login from an unusual source IP."
+
+        },
+
+        finding:{
+
+            id:"F-001",
+
+            severity:"HIGH",
+
+            title:"Suspicious Authentication Activity",
+
+            description:
+            "Authentication behavior indicates a potential unauthorized access attempt.",
+
+            riskScore:87,
+
+            supportingEvidence:["E-001"]
+
+        },
+
+        review:{
+
+            decision:"PENDING",
+
+            notes:"",
+
+            reviewer:"",
+
+            reviewedAt:""
+
+        },
+
+        timeline:[
+
+            {
+                time:new Date().toLocaleString(),
+
+                title:"Case Created",
+
+                description:
+                "Sample investigation initialized."
+            },
+
+            {
+                time:new Date().toLocaleString(),
+
+                title:"Evidence Added",
+
+                description:
+                "auth-log-example.txt associated with case."
+            },
+
+            {
+                time:new Date().toLocaleString(),
+
+                title:"Analysis Completed",
+
+                description:
+                "Suspicious authentication activity detected."
+            }
+
+        ],
+
+        reportGeneratedAt:""
+
+    };
+
+
+    localStorage.setItem(
+        CASE_KEY,
+        JSON.stringify([sample])
+    );
+
+}
+
+
+/* =========================================
+   LOGIN
+========================================= */
+
+function login(event){
+
+    event.preventDefault();
+
+    const username =
+        document.getElementById(
+            "loginUsername"
+        ).value.trim();
+
+    const email =
+        document.getElementById(
+            "loginEmail"
+        ).value.trim();
+
+    const role =
+        document.getElementById(
+            "loginRole"
+        ).value;
+
+
+    const session = {
+
+        username:username,
+
+        email:email,
+
+        role:role,
+
+        loginTime:new Date().toISOString()
+
+    };
+
+
+    /*
+       IMPORTANT:
+       Password is NOT stored.
+    */
+
+    localStorage.setItem(
+        SESSION_KEY,
+        JSON.stringify(session)
+    );
+
+
+    document.getElementById(
+        "loginScreen"
+    ).style.display="none";
+
+
+    document.getElementById(
+        "app"
+    ).style.display="block";
+
+
+    document.getElementById(
+        "currentUser"
+    ).textContent =
+        username + " • " + role;
+
+
+    updateAll();
+
+}
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+function logout(){
+
+    localStorage.removeItem(
+        SESSION_KEY
+    );
+
+    localStorage.removeItem(
+        CURRENT_CASE_KEY
+    );
+
+    document.getElementById(
+        "app"
+    ).style.display="none";
+
+    document.getElementById(
+        "loginScreen"
+    ).style.display="flex";
+
+}
+
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+function showPage(pageId,button){
+
+    document.querySelectorAll(".page")
+        .forEach(
+            p => p.classList.remove("active")
+        );
+
+
+    document.getElementById(pageId)
+        .classList.add("active");
+
+
+    document.querySelectorAll(".nav-btn")
+        .forEach(
+            b => b.classList.remove("active")
+        );
+
+
+    if(button){
+        button.classList.add("active");
+    }
+
+
+    const titles = {
+
+        dashboard:"Dashboard",
+
+        cases:"Cases",
+
+        evidence:"Digital Evidence",
+
+        analysis:"Analysis",
+
+        findings:"Findings",
+
+        timeline:"Investigation Timeline",
+
+        trace:"Evidence Trace",
+
+        review:"Investigator Review",
+
+        reports:"Reports"
+
+    };
+
+
+    document.getElementById(
+        "pageTitle"
+    ).textContent =
+        titles[pageId];
+
+
+    if(pageId==="cases"){
+        renderCases();
+    }
+
+    if(pageId==="evidence"){
+        renderEvidence();
+    }
+
+    if(pageId==="analysis"){
+        renderAnalysis();
+    }
+
+    if(pageId==="findings"){
+        renderFinding();
+    }
+
+    if(pageId==="timeline"){
+        renderTimeline();
+    }
+
+    if(pageId==="reports"){
+        renderReport();
+    }
+
+}
+
+
+/* =========================================
+   CASE STORAGE
+========================================= */
+
+function getCases(){
+
+    return JSON.parse(
+        localStorage.getItem(CASE_KEY) || "[]"
+    );
+
+}
+
+
+function saveCase(event){
+
+    event.preventDefault();
+
+
+    const cases = getCases();
+
+
+    const session =
+        JSON.parse(
+            localStorage.getItem(
+                SESSION_KEY
+            ) || "{}"
+        );
+
+
+    /*
+       Generate unique case ID.
+    */
+
+    let maxNumber = 100;
+
+
+    cases.forEach(c => {
+
+        const number =
+            parseInt(
+                String(c.id)
+                    .replace("CASE-","")
+            );
+
+        if(!isNaN(number) && number > maxNumber){
+            maxNumber = number;
+        }
+
+    });
+
+
+    const newCaseNumber =
+        maxNumber + 1;
+
+
+    /*
+       EVERYTHING RELATED TO THIS CASE
+       IS CREATED HERE.
+    */
+
+    const newCase = {
+
+        /* CASE INFORMATION */
+
+        id:"CASE-" + newCaseNumber,
+
+        incident:
+            document.getElementById(
+                "caseName"
+            ).value.trim(),
+
+        priority:
+            document.getElementById(
+                "casePriority"
+            ).value,
+
+        description:
+            document.getElementById(
+                "caseDescription"
+            ).value.trim(),
+
+
+        /* INVESTIGATOR INFORMATION */
+
+        investigator:
+            session.username || "Unknown",
+
+        email:
+            session.email || "",
+
+        role:
+            session.role || "Investigator",
+
+
+        /* CASE STATUS */
+
+        status:"ACTIVE",
+
+        createdAt:
+            new Date().toISOString(),
+
+
+        /* EMPTY DATA FOR NEW CASE */
+
+        evidence:[],
+
+        analysis:{
+
+            parsedEvents:0,
+
+            anomalies:0,
+
+            iocs:0,
+
+            riskScore:null,
+
+            output:""
+
+        },
+
+        finding:null,
+
+        review:{
+
+            decision:"PENDING",
+
+            notes:"",
+
+            reviewer:"",
+
+            reviewedAt:""
+
+        },
+
+
+        /* TIMELINE STARTS HERE */
+
+        timeline:[
+
+            {
+
+                time:
+                    new Date().toLocaleString(),
+
+                title:
+                    "Case Created",
+
+                description:
+                    "Investigation created by " +
+                    (session.username || "Investigator")
+
+            }
+
+        ],
+
+
+        reportGeneratedAt:""
+
+    };
+
+
+    /*
+       SAVE CASE
+    */
+
+    cases.push(newCase);
+
+
+    localStorage.setItem(
+        CASE_KEY,
+        JSON.stringify(cases)
+    );
+
+
+    /*
+       MAKE THIS THE CURRENT CASE
+    */
+
+    localStorage.setItem(
+        CURRENT_CASE_KEY,
+        newCase.id
+    );
+
+
+    /*
+       CLEAR FORM
+    */
+
+    document.getElementById(
+        "caseName"
+    ).value="";
+
+
+    document.getElementById(
+        "caseDescription"
+    ).value="";
+
+
+    closeCaseForm();
+
+
+    renderCases();
+
+    updateDashboard();
+
+
+    /*
+       IMPORTANT:
+       No theme change happens here.
+       Theme is completely separate.
+    */
+
+    alert(
+        newCase.id +
+        " saved successfully!"
+    );
+
+}
+
+
+/* =========================================
+   CASE FORM
+========================================= */
+
+function openCaseForm(){
+
+    document.getElementById(
+        "caseFormPanel"
+    ).style.display="block";
+
+}
+
+
+function closeCaseForm(){
+
+    document.getElementById(
+        "caseFormPanel"
+    ).style.display="none";
+
+}
+
+
+/* =========================================
+   SELECT CASE
+========================================= */
+
+function selectCase(caseId){
+
+    localStorage.setItem(
+        CURRENT_CASE_KEY,
+        caseId
+    );
+
+
+    const selected =
+        getCases().find(
+            c => c.id===caseId
+        );
+
+
+    if(selected){
+
+        alert(
+            selected.id +
+            " selected."
+        );
+
+    }
+
+
+    updateAll();
+
+}
+
+
+function openSavedCase(caseId){
+
+    selectCase(caseId);
+
+    showPage("evidence");
+
+}
+
+
+/* =========================================
+   RENDER CASES
+========================================= */
+
+function renderCases(){
+
+    const cases=getCases();
+
+    const table=
+        document.getElementById(
+            "caseTable"
+        );
+
+
+    if(!cases.length){
+
+        table.innerHTML=`
+
+            <tr>
+
+                <td
+                    colspan="7"
+                    class="muted">
+
+                    No investigations found.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    table.innerHTML =
+        cases
+        .map(c => `
+
+            <tr>
+
+                <td>
+                    <b>
+                        ${escapeHTML(c.id)}
+                    </b>
+                </td>
+
+
+                <td>
+                    ${escapeHTML(c.incident)}
+                </td>
+
+
+                <td>
+
+                    <span
+                        class="badge ${priorityClass(c.priority)}">
+
+                        ${escapeHTML(c.priority)}
+
+                    </span>
+
+                </td>
+
+
+                <td>
+                    ${escapeHTML(c.investigator)}
+                </td>
+
+
+                <td>
+                    ${escapeHTML(c.email)}
+                </td>
+
+
+                <td>
+
+                    <span class="badge low">
+                        ${escapeHTML(c.status)}
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    <button
+                        class="btn"
+                        onclick="openSavedCase('${c.id}')">
+
+                        OPEN
+
+                    </button>
+
+                </td>
+
+            </tr>
+
+        `)
+        .join("");
+
+}
+
+
+function priorityClass(priority){
+
+    if(priority==="HIGH"){
+        return "high";
+    }
+
+    if(priority==="MEDIUM"){
+        return "medium";
+    }
+
+    return "low";
+
+}
+
+
+/* =========================================
+   CURRENT CASE
+========================================= */
+
+function getCurrentCase(){
+
+    const currentId =
+        localStorage.getItem(
+            CURRENT_CASE_KEY
+        );
+
+
+    const cases=getCases();
+
+
+    return (
+        cases.find(
+            c => c.id===currentId
+        )
+        ||
+        cases[0]
+        ||
+        null
+    );
+
+}
+
+
+function updateCase(updatedCase){
+
+    const cases=getCases();
+
+
+    const index =
+        cases.findIndex(
+            c => c.id===updatedCase.id
+        );
+
+
+    if(index!==-1){
+
+        cases[index]=updatedCase;
+
+
+        localStorage.setItem(
+            CASE_KEY,
+            JSON.stringify(cases)
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   EVIDENCE
+========================================= */
+
+async function processEvidence(input){
+
+    const file=input.files[0];
+
+    if(!file){
+        return;
+    }
+
+
+    const currentCase=
+        getCurrentCase();
+
+
+    if(!currentCase){
+
+        alert(
+            "Please create/select a case first."
+        );
+
+        return;
+
+    }
+
+
+    const result=
+        document.getElementById(
+            "evidenceResult"
+        );
+
+
+    result.innerHTML=
+        `<p class="muted">
+            Generating SHA-256...
+        </p>`;
+
+
+    try{
+
+        const buffer=
+            await file.arrayBuffer();
+
+
+        const hashBuffer=
+            await crypto.subtle.digest(
+                "SHA-256",
+                buffer
+            );
+
+
+        const hashArray=
+            Array.from(
+                new Uint8Array(hashBuffer)
+            );
+
+
+        const hash=
+            hashArray
+            .map(
+                b =>
+                b
+                .toString(16)
+                .padStart(2,"0")
+            )
+            .join("");
+
+
+        const evidence={
+
+            id:
+                "E-" +
+                String(
+                    currentCase.evidence.length+1
+                ).padStart(3,"0"),
+
+            name:file.name,
+
+            type:
+                file.type ||
+                "UNKNOWN FILE",
+
+            size:
+                formatBytes(file.size),
+
+            hash:hash,
+
+            uploadedAt:
+                new Date().toISOString()
+
+        };
+
+
+        currentCase.evidence.push(
+            evidence
+        );
+
+
+        currentCase.timeline.push({
+
+            time:
+                new Date().toLocaleString(),
+
+            title:
+                "Evidence Added",
+
+            description:
+                file.name +
+                " uploaded and SHA-256 generated."
+
+        });
+
+
+        updateCase(currentCase);
+
+
+        result.innerHTML=`
+
+            <div
+                class="panel"
+                style="margin-top:20px">
+
+                <p>
+
+                    <b>Evidence ID:</b>
+
+                    ${escapeHTML(evidence.id)}
+
+                </p>
+
+
+                <p style="margin-top:8px">
+
+                    <b>File:</b>
+
+                    ${escapeHTML(evidence.name)}
+
+                </p>
+
+
+                <p
+                    style="
+                    margin-top:8px;
+                    word-break:break-all">
+
+                    <b>SHA-256:</b>
+
+                    ${escapeHTML(evidence.hash)}
+
+                </p>
+
+
+                <p style="margin-top:8px">
+
+                    <b>Integrity:</b>
+
+                    <span class="badge low">
+                        VERIFIED
+                    </span>
+
+                </p>
+
+            </div>
+
+        `;
+
+
+        renderEvidence();
+
+        updateDashboard();
+
+    }
+    catch(error){
+
+        result.innerHTML=
+            `<p style="color:var(--red)">
+                Could not generate hash.
+            </p>`;
+
+    }
+
+}
+
+
+function renderEvidence(){
+
+    const c=getCurrentCase();
+
+
+    const info=
+        document.getElementById(
+            "evidenceCaseInfo"
+        );
+
+
+    const list=
+        document.getElementById(
+            "evidenceList"
+        );
+
+
+    if(!c){
+
+        info.textContent=
+            "No case selected.";
+
+        list.innerHTML=
+            "No evidence added.";
+
+        return;
+
+    }
+
+
+    info.innerHTML=`
+
+        <b>
+            ${escapeHTML(c.id)}
+        </b>
+
+        —
+
+        ${escapeHTML(c.incident)}
+
+        <br>
+
+        <span class="muted">
+            Investigator:
+            ${escapeHTML(c.investigator)}
+            |
+            Email:
+            ${escapeHTML(c.email)}
+        </span>
+
+    `;
+
+
+    if(!c.evidence.length){
+
+        list.innerHTML=
+            `<span class="muted">
+                No evidence added to this case.
+            </span>`;
+
+        return;
+
+    }
+
+
+    list.innerHTML =
+        c.evidence
+        .map(e => `
+
+            <div class="panel">
+
+                <b>
+                    ${escapeHTML(e.id)}
+                </b>
+
+                —
+                ${escapeHTML(e.name)}
+
+
+                <p
+                    class="muted"
+                    style="margin-top:8px">
+
+                    Type:
+                    ${escapeHTML(e.type)}
+
+                    |
+
+                    Size:
+                    ${escapeHTML(e.size)}
+
+                </p>
+
+
+                <p
+                    style="
+                    margin-top:8px;
+                    word-break:break-all;
+                    font-size:12px">
+
+                    SHA-256:
+                    ${escapeHTML(e.hash)}
+
+                </p>
+
+            </div>
+
+        `)
+        .join("");
+
+}
+
+
+function formatBytes(bytes){
+
+    if(bytes===0){
+        return "0 Bytes";
+    }
+
+
+    const sizes=[
+        "Bytes",
+        "KB",
+        "MB",
+        "GB"
+    ];
+
+
+    const i=
+        Math.floor(
+            Math.log(bytes) /
+            Math.log(1024)
+        );
+
+
+    return (
+        parseFloat(
+            (
+                bytes /
+                Math.pow(1024,i)
+            ).toFixed(2)
+        )
+        +
+        " " +
+        sizes[i]
+    );
+
+}
+
+
+/* =========================================
+   ANALYSIS
+========================================= */
+
+function runAnalysis(){
+
+    const c=getCurrentCase();
+
+
+    if(!c){
+
+        alert(
+            "Select a case first."
+        );
+
+        return;
+
+    }
+
+
+    const evidenceCount=
+        c.evidence.length;
+
+
+    c.analysis={
+
+        parsedEvents:
+            evidenceCount ? 124 : 0,
+
+        anomalies:
+            evidenceCount ? 7 : 0,
+
+        iocs:
+            evidenceCount ? 3 : 0,
+
+        riskScore:
+            evidenceCount ? 87 : 0,
+
+        output:
+            evidenceCount
+            ?
+            "Analysis detected repeated failed authentication attempts, unusual access behavior and a suspicious source indicator."
+            :
+            "No evidence available for analysis."
+
+    };
+
+
+    if(evidenceCount){
+
+        c.finding={
+
+            id:"F-001",
+
+            severity:"HIGH",
+
+            title:
+                "Suspicious Authentication Activity",
+
+            description:
+                "Potential unauthorized access pattern detected from evidence analysis.",
+
+            riskScore:87,
+
+            supportingEvidence:
+                c.evidence.map(
+                    e => e.id
+                )
+
+        };
+
+    }
+
+
+    c.timeline.push({
+
+        time:
+            new Date().toLocaleString(),
+
+        title:
+            "Analysis Completed",
+
+        description:
+            "Evidence analyzed and anomalies evaluated."
+
+    });
+
+
+    updateCase(c);
+
+    renderAnalysis();
+
+    renderFinding();
+
+    renderTimeline();
+
+    updateDashboard();
+
+
+    alert(
+        "Analysis completed."
+    );
+
+}
+
+
+function renderAnalysis(){
+
+    const c=getCurrentCase();
+
+
+    if(!c){
+        return;
+    }
+
+
+    document.getElementById(
+        "parsedEvents"
+    ).textContent=
+        c.analysis.parsedEvents || 0;
+
+
+    document.getElementById(
+        "anomalies"
+    ).textContent=
+        c.analysis.anomalies || 0;
+
+
+    document.getElementById(
+        "iocs"
+    ).textContent=
+        c.analysis.iocs || 0;
+
+
+    document.getElementById(
+        "riskScore"
+    ).textContent=
+        c.analysis.riskScore ?? "--";
+
+
+    document.getElementById(
+        "analysisOutput"
+    ).textContent=
+        c.analysis.output ||
+        "No analysis performed yet.";
+
+}
+
+
+/* =========================================
+   FINDINGS
+========================================= */
+
+function renderFinding(){
+
+    const c=getCurrentCase();
+
+
+    const el=
+        document.getElementById(
+            "findingContent"
+        );
+
+
+    if(!c || !c.finding){
+
+        el.innerHTML=
+            `<span class="muted">
+                No findings generated yet.
+            </span>`;
+
+        return;
+
+    }
+
+
+    el.innerHTML=`
+
+        <h3>
+            ${escapeHTML(c.finding.title)}
+        </h3>
+
+
+        <p style="margin-top:10px">
+
+            <span class="badge high">
+                ${escapeHTML(c.finding.severity)}
+            </span>
+
+        </p>
+
+
+        <p
+            class="muted"
+            style="margin-top:15px">
+
+            ${escapeHTML(c.finding.description)}
+
+        </p>
+
+
+        <div
+            class="cards"
+            style="margin-top:20px">
+
+            <div class="card">
+
+                <div class="card-label">
+                    EXPLAINABLE RISK SCORE
+                </div>
+
+                <div class="card-number">
+                    ${c.finding.riskScore}/100
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-label">
+                    SUPPORTING EVIDENCE
+                </div>
+
+                <div class="card-number">
+                    ${c.finding.supportingEvidence.length}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <h4 style="margin-top:15px">
+            Supporting Evidence
+        </h4>
+
+
+        <p
+            class="muted"
+            style="margin-top:8px">
+
+            ${c.finding.supportingEvidence.join(", ")}
+
+        </p>
+
+    `;
+
+}
+
+
+/* =========================================
+   REVIEW
+========================================= */
+
+function recordDecision(){
+
+    const c=getCurrentCase();
+
+
+    if(!c){
+
+        alert(
+            "Select a case first."
+        );
+
+        return;
+
+    }
+
+
+    const decision=
+        document.querySelector(
+            'input[name="decision"]:checked'
+        ).value;
+
+
+    const notes=
+        document.getElementById(
+            "reviewNotes"
+        ).value.trim();
+
+
+    const session=
+        JSON.parse(
+            localStorage.getItem(
+                SESSION_KEY
+            ) || "{}"
+        );
+
+
+    c.review={
+
+        decision:decision,
+
+        notes:notes,
+
+        reviewer:
+            session.username ||
+            "Investigator",
+
+        reviewedAt:
+            new Date().toISOString()
+
+    };
+
+
+    c.timeline.push({
+
+        time:
+            new Date().toLocaleString(),
+
+        title:
+            "Investigator Decision",
+
+        description:
+            decision +
+            (
+                notes
+                ? " — " + notes
+                : ""
+            )
+
+    });
+
+
+    updateCase(c);
+
+
+    document.getElementById(
+        "decisionResult"
+    ).innerHTML=`
+
+        <span class="badge low">
+
+            DECISION SAVED:
+            ${escapeHTML(decision)}
+
+        </span>
+
+    `;
+
+
+    updateDashboard();
+
+}
+
+
+/* =========================================
+   TIMELINE
+========================================= */
+
+function renderTimeline(){
+
+    const c=getCurrentCase();
+
+
+    const el=
+        document.getElementById(
+            "timelineContent"
+        );
+
+
+    if(!c){
+
+        el.innerHTML=
+            `<span class="muted">
+                No case selected.
+            </span>`;
+
+        return;
+
+    }
+
+
+    el.innerHTML=
+        c.timeline
+        .map(e => `
+
+            <div class="event">
+
+                <div class="event-time">
+                    ${escapeHTML(e.time)}
+                </div>
+
+                <div class="event-title">
+                    ${escapeHTML(e.title)}
+                </div>
+
+                <div class="muted">
+                    ${escapeHTML(e.description)}
+                </div>
+
+            </div>
+
+        `)
+        .join("");
+
+}
+
+
+/* =========================================
+   REPORT
+========================================= */
+
+function generateReport(){
+
+    const c=getCurrentCase();
+
+
+    if(!c){
+
+        alert(
+            "Select a case first."
+        );
+
+        return;
+
+    }
+
+
+    c.reportGeneratedAt=
+        new Date().toISOString();
+
+
+    c.timeline.push({
+
+        time:
+            new Date().toLocaleString(),
+
+        title:
+            "Report Generated",
+
+        description:
+            "Evidence-backed investigation report generated."
+
+    });
+
+
+    updateCase(c);
+
+    renderReport();
+
+    updateDashboard();
+
+
+    alert(
+        "Report generated and saved."
+    );
+
+}
+
+
+function renderReport(){
+
+    const c=getCurrentCase();
+
+
+    const el=
+        document.getElementById(
+            "reportPreview"
+        );
+
+
+    if(!c){
+
+        el.innerHTML=
+            "No case selected.";
+
+        return;
+
+    }
+
+
+    el.innerHTML=`
+
+        <div class="panel">
+
+            <p>
+                <b>Case ID:</b>
+                ${escapeHTML(c.id)}
+            </p>
+
+
+            <p style="margin-top:10px">
+                <b>Incident:</b>
+                ${escapeHTML(c.incident)}
+            </p>
+
+
+            <p style="margin-top:10px">
+                <b>Priority:</b>
+                ${escapeHTML(c.priority)}
+            </p>
+
+
+            <p style="margin-top:10px">
+                <b>Investigator:</b>
+                ${escapeHTML(c.investigator)}
+            </p>
+
+
+            <p style="margin-top:10px">
+                <b>Email:</b>
+                ${escapeHTML(c.email)}
+            </p>
+
+
+            <p style="margin-top:10px">
+                <b>Evidence Items:</b>
+                ${c.evidence.length}
+            </p>
+
+
+            <p style="margin-top:10px">
+                <b>Risk Score:</b>
+                ${c.analysis.riskScore ?? "Not calculated"}
+            </p>
+
+
+            <p style="margin-top:10px">
+                <b>Finding:</b>
+
+                ${
+                    c.finding
+                    ?
+                    escapeHTML(c.finding.title)
+                    :
+                    "None"
+                }
+
+            </p>
+
+
+            <p style="margin-top:10px">
+                <b>Investigator Decision:</b>
+                ${escapeHTML(c.review.decision)}
+            </p>
+
+
+            ${
+                c.review.notes
+                ?
+                `
+                <p style="margin-top:10px">
+
+                    <b>
+                        Review Notes:
+                    </b>
+
+                    ${escapeHTML(c.review.notes)}
+
+                </p>
+                `
+                :
+                ""
+            }
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================
+   DASHBOARD
+========================================= */
+
+function updateDashboard(){
+
+    const cases=getCases();
+
+
+    const active=
+        cases.filter(
+            c => c.status==="ACTIVE"
+        ).length;
+
+
+    const evidence=
+        cases.reduce(
+            (sum,c) =>
+                sum + c.evidence.length,
+            0
+        );
+
+
+    const pending=
+        cases.filter(
+            c =>
+                c.review &&
+                c.review.decision==="PENDING"
+        ).length;
+
+
+    document.getElementById(
+        "totalCases"
+    ).textContent=
+        cases.length;
+
+
+    document.getElementById(
+        "activeCases"
+    ).textContent=
+        active;
+
+
+    document.getElementById(
+        "totalEvidence"
+    ).textContent=
+        evidence;
+
+
+    document.getElementById(
+        "pendingReviews"
+    ).textContent=
+        pending;
+
+
+    const recent=
+        document.getElementById(
+            "recentCases"
+        );
+
+
+    if(!cases.length){
+
+        recent.innerHTML=
+            `<span class="muted">
+                No investigations created.
+            </span>`;
+
+        return;
+
+    }
+
+
+    recent.innerHTML=
+        cases
+        .slice(-5)
+        .reverse()
+        .map(c => `
+
+            <div
+                style="
+                padding:12px 0;
+                border-bottom:1px solid var(--border)">
+
+                <b>
+                    ${escapeHTML(c.id)}
+                </b>
+
+                —
+                ${escapeHTML(c.incident)}
+
+
+                <div
+                    class="muted"
+                    style="margin-top:5px">
+
+                    ${escapeHTML(c.priority)}
+                    •
+                    ${escapeHTML(c.status)}
+
+                </div>
+
+            </div>
+
+        `)
+        .join("");
+
+}
+
+
+/* =========================================
+   UPDATE ALL
+========================================= */
+
+function updateAll(){
+
+    updateDashboard();
+
+    renderCases();
+
+    renderEvidence();
+
+    renderAnalysis();
+
+    renderFinding();
+
+    renderTimeline();
+
+    renderReport();
+
+}
+
+
+/* =========================================
+   THEME
+   SEPARATE — DOES NOT TOUCH CASE SAVE
+========================================= */
+
+function toggleThemeMenu(){
+
+    const menu=
+        document.getElementById(
+            "themeMenu"
+        );
+
+
+    menu.style.display =
+        menu.style.display==="block"
+        ? "none"
+        : "block";
+
+}
+
+
+function setTheme(theme){
+
+    localStorage.setItem(
+        THEME_KEY,
+        theme
+    );
+
+
+    applyTheme(theme);
+
+
+    document.getElementById(
+        "themeMenu"
+    ).style.display="none";
+
+}
+
+
+function applyTheme(theme){
+
+    if(theme==="light"){
+
+        document.body.classList.add(
+            "light"
+        );
+
+        return;
+
+    }
+
+
+    if(theme==="dark"){
+
+        document.body.classList.remove(
+            "light"
+        );
+
+        return;
+
+    }
+
+
+    const prefersLight=
+        window.matchMedia(
+            "(prefers-color-scheme: light)"
+        ).matches;
+
+
+    document.body.classList.toggle(
+        "light",
+        prefersLight
+    );
+
+}
+
+
+/* =========================================
+   HTML SAFETY
+========================================= */
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+createSampleCase();
+
+
+const savedTheme=
+    localStorage.getItem(
+        THEME_KEY
+    ) || "system";
+
+
+applyTheme(savedTheme);
+
+
+const savedSession=
+    localStorage.getItem(
+        SESSION_KEY
+    );
+
+
+if(savedSession){
+
+    const user=
+        JSON.parse(savedSession);
+
+
+    document.getElementById(
+        "loginScreen"
+    ).style.display="none";
+
+
+    document.getElementById(
+        "app"
+    ).style.display="block";
+
+
+    document.getElementById(
+        "currentUser"
+    ).textContent=
+        user.username +
+        " • " +
+        user.role;
+
+}
+
+
+updateAll();
+
+</script>
+
+</body>
+</html>
